@@ -5,3 +5,7 @@ To start this app, first download the code to your local machine using `git clon
 `python -m SimpleHTTPServer`
 
 which will run this program on your local machine at `http://0.0.0.0:8000`. Although depending on your browser, it may suffice to simply run the `Index.html`.
+
+
+_Example Dashboard:_
+![Image of dashboard for volume rendering tool](https://github.com/dsherma7/VolumeRendering/blob/master/Manual/Dashboard.png "Logo Volume Rendering Dashboard")
