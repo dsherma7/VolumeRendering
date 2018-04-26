@@ -1,0 +1,11 @@
+# TeX Files Besides .pdf
+Manual/*.png
+*.aux
+*.dvi
+*.log
+*.out
+*.gz
+*.tex
+
+# Max OSx Files
+.DS_Store

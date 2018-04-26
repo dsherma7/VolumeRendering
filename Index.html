@@ -1,0 +1,41 @@
+<html lang="en">
+	<head>
+		<title>Volume Rendering - ECS 277</title>
+		<!-- <author> Doug Sherman <br>
+		<a href="mailto:desherman@ucdavis.edu">desherman@ucdavis.edu</a>
+		</author> -->
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link href="./css/main.css" rel="stylesheet">		
+		<!-- D3 and JQuery -->
+		<script src="https://d3js.org/d3.v5.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<link href='https://fonts.googleapis.com/css?family=Roboto:100' rel='stylesheet' type='text/css'>
+	</head>
+	<body>		
+		<div id="container1" class="container"></div>
+		<div id="container2" class="container"></div>
+		<div id="toolbar" class='transfer_func'>Transfer Function </div>
+		<script src="./js/three.min.js"></script>
+		<script src="./js/Detector.js"></script>
+		<script src="./js/stats.min.js"></script>
+		<script src="./js/OrbitControls.js"></script>
+		<script src="./js/dat.gui.min.js"></script>
+		<!-- My Scripts -->
+		<script src="./js/transfer_func.js"> </script>	
+		<script src="./js/util.js"> </script>	
+		<script src="./js/main.js"> </script>
+			
+		<div id="interpolate_select" class="selector">
+			<table> 
+				<tr>
+					<td class="tbl-bold"> Select Palette: </td>
+					<td class="tbl-normal"> <select id="palette"> </select> </td>
+					<td class="tbl-normal"> <button id="reset"> Reset </button>  </td>
+				</tr> 
+			</table>
+		</div>
+
+	</body>
+</html>
