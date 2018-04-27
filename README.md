@@ -9,3 +9,14 @@ which will run this program on your local machine at `http://0.0.0.0:8000`. Alth
 
 _Example Dashboard:_
 ![Image of dashboard for volume rendering tool](https://github.com/dsherma7/VolumeRendering/blob/master/Manual/Dashboard.png "Logo Volume Rendering Dashboard")
+
+
+
+by: Doug Sherman [desherman@ucdavis.edu](mailto:desherman@ucdavis.edu)
+
+
+
+__References:__
+* Initial Volume Rendering is based off of Leandro Barbagallo's code found at [http://www.lebarba.com/](http://www.lebarba.com/).
+* Three.JS was used together with WebGL to produce the animations [https://threejs.org/](https://threejs.org/).
+* D3 was used as the primary framework for the dashboard and user interface [https://d3js.org/](https://d3js.org/).

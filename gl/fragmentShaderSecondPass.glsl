@@ -3,7 +3,7 @@ varying vec4 projectedCoords;
 uniform sampler2D tex, cubeTex, transferTex;
 uniform float steps;
 uniform float alphaCorrection;
-// Custom Uniforms
+// Custom Parameter Uniforms
 uniform int useLinear;
 uniform float opacities[20];
 uniform int ray_distance;
@@ -18,12 +18,12 @@ uniform vec3 sunIntensity;
 const int MAX_STEPS = 1000;
 
 
-float getOpacity (float a) 
+// Clamps a vec4 to the range [min_val, max_val]
+vec4 normV4(vec4 x, float min_val, float max_val)
 {
-	// int idx = int(round(a * float(opacities.length-1)));
-	int idx = 4;
-	return opacities[idx];
-
+	for (int i=0; i<4; i++)
+		x[i] = max(min(x[i],max_val),min_val);
+	return x;
 }
 
 // Performs linear interpolation between two points
@@ -35,24 +35,14 @@ vec4 interpolateLinear(vec4 x, vec4 y, vec3 a)
 				x.a);
 }
 
-float b(float x, int i, int k) 
-{
-	return pow(1.0-x, float(k-i)) * pow(x, float(i));
-}
-
+// Uses Bezier Cubic splines to interpolate 4 points b0,b1,b2, and b3
+float b(float x, int i, int k)  { return pow(1.0-x, float(k-i)) * pow(x, float(i)); }
 float binom(float x, float b0, float b1, float b2, float b3)
 {
 	return 1.0 * b0 * b(x,0,3) + 
 		   3.0 * b1 * b(x,1,3) + 
 		   3.0 * b2 * b(x,2,3) + 
 		   1.0 * b3 * b(x,3,3) ;
-}
-
-vec4 normV4(vec4 x, float min_val, float max_val)
-{
-	for (int i=0; i<4; i++)
-		x[i] = max(min(x[i],max_val),min_val);
-	return x;
 }
 
 // Performs cubic interpolation between two points
@@ -71,7 +61,6 @@ vec4 interpolateCubic(vec4 x, vec4 y,  vec4 z, vec4 w, vec3 a)
 							binom(a.z, b0.z, b1.z, b2.z, b3.z),
 							y.a);
 	
-	// return interpolate;
 	return normV4(interpolate, 0.0, 255.0) ;	
 }
 
@@ -121,19 +110,13 @@ vec4 sampleAs3DTexture( vec3 texCoord )
 	colorSlice3.rgb = texture2D( transferTex, vec2( colorSlice3.a, 1.0) ).rgb;
 	colorSlice4.rgb = texture2D( transferTex, vec2( colorSlice4.a, 1.0) ).rgb;
 
-	// Update with new opacities
-	colorSlice1.a = 0.5;
-	// colorSlice2.a = colorSlice3.a = colorSlice4.a = 1.0;
-
 	//How distant is zSlice1 to ZSlice2. Used to interpolate between one Z slice and the other.
 	vec3 Difference = mod(texCoord * 255.0, 1.0);
 
 	//Finally interpolate between the two intermediate colors of each Z slice.
-	if (useLinear == 1) { 
-		// Use Linear Interpolation 
-		return interpolateLinear(colorSlice3, colorSlice4, Difference);
-	}	
-	// Use Cubic Interpolation
+	
+	if (useLinear == 1)	// Either Use Linear Interpolation or Cubic Interpolation
+		return interpolateLinear(colorSlice3, colorSlice4, Difference);									
 	return interpolateCubic(colorSlice1, colorSlice2, colorSlice3, colorSlice4, Difference) ;
 }
 
@@ -187,7 +170,7 @@ void main( void ) {
 		//Get the voxel intensity value from the 3D texture.
 		colorSample = sampleAs3DTexture( currentPosition );
 
-		// Add Phong Lighting
+		// Add Phong Lighting if desired
 		if (phong==1) {
 			vec3 surfaceNormal = normalize( currentPosition );
 			vec3 normSunDir = normalize( sunDirection );
@@ -222,9 +205,5 @@ void main( void ) {
 			break;
 	}
 
-	
-
-
 	gl_FragColor  = accumulatedColor;
-
 }

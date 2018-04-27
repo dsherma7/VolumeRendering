@@ -4,23 +4,21 @@ if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 var containers=[], statss=[], guis = [];
 var cameras=[], sceneFirstPasses=[], sceneSecondPasses=[], renderers=[];
 
-var clock = new THREE.Clock();
+var clock = new THREE.Clock(), guiControlss = [];
 var rtTextures = [], transferTextures = [], cubeTextureses = [['bonsai', 'foot', 'teapot'],['bonsai', 'foot', 'teapot']];
-var guiControlss = [], controlss = [];
 
 var width = window.innerWidth, height = window.innerHeight;
-height = 325;
 
 var sunDirection = [3.0, -2.0, 0.0],
 	sunIntensity = [1.0, 1.0, 1.0],
 	ambientLightIntensity = [0.2, 0.2, 0.2];
 
-var materialSecondPasses = [], gl;
+var materialSecondPasses = [];
 init('container1');
 init('container2');
 
-
 function init(id) {
+	// Load both sets of Shaders and starts the program
 	loadTextResource('./gl/fragmentShaderFirstPass.glsl', function (fs_Err1, fs_first) {
 		if (fs_Err1) {
 			alert('Fatal error getting vertex shader (see console)');
@@ -58,7 +56,6 @@ function init(id) {
 function InitDemo(id, fragmentShaderFirstPass, vertexShaderFirstPass, fragmentShaderSecondPass, vertexShaderSecondPass) {
 
 	var idx = +id.slice(-1)-1;	
-
 	//Parameters that can be modified.
 	guiControlss[idx] = new function() {
 		this.model = 'bonsai';
@@ -79,12 +76,10 @@ function InitDemo(id, fragmentShaderFirstPass, vertexShaderFirstPass, fragmentSh
 	containers[idx] = document.getElementById( id );
 
 	cameras[idx] = new THREE.PerspectiveCamera( 40,  width / height, 0.01, 3000.0 );
-	// cameras[idx] = new THREE.CubeCamera( 0.01, 3000.0, 512 );
 	cameras[idx].position.z = 2.0;
 
-	controlss[idx] = new THREE.OrbitControls( cameras[idx], containers[idx] );
-	controlss[idx].center.set( 0.0, 0.0, 0.0 );
-
+	var controls = new THREE.OrbitControls( cameras[idx], containers[idx] );
+	controls.center.set( 0.0, 0.0, 0.0 );
 
 	//Load the 2D texture containing the Z slices.
 	cubeTextureses[idx]['bonsai'] = THREE.ImageUtils.loadTexture('bonsai.raw.png' );
@@ -92,15 +87,12 @@ function InitDemo(id, fragmentShaderFirstPass, vertexShaderFirstPass, fragmentSh
 	cubeTextureses[idx]['foot']   = THREE.ImageUtils.loadTexture('foot.raw.png');
 
 	//Don't let it generate mipmaps to save memory and apply linear filtering to prevent use of LOD.
-	// cubeTextureses[idx]['bonsai'].generateMipmaps = false;
 	cubeTextureses[idx]['bonsai'].minFilter = THREE.LinearFilter;
 	cubeTextureses[idx]['bonsai'].magFilter = THREE.LinearFilter;
 
-	// cubeTextureses[idx]['teapot'].generateMipmaps = false;
 	cubeTextureses[idx]['teapot'].minFilter = THREE.LinearFilter;
 	cubeTextureses[idx]['teapot'].magFilter = THREE.LinearFilter;
 
-	// cubeTextureses[idx]['foot'].generateMipmaps = false;
 	cubeTextureses[idx]['foot'].minFilter = THREE.LinearFilter;
 	cubeTextureses[idx]['foot'].magFilter = THREE.LinearFilter;
 
@@ -275,19 +267,3 @@ function render() {
 }
 
 //Leandro R Barbagallo - 2015 - lebarba at gmail.com
-
-
-var BASE64_MARKER = ';base64,';
-function convertDataURIToBinary(dataURI) {
-  var base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
-  var base64 = dataURI.substring(base64Index);
-  var raw = window.atob(base64);
-  var rawLength = raw.length;
-  var array = new Uint8Array(new ArrayBuffer(rawLength));
-
-  for(i = 0; i < rawLength; i++) {
-    array[i] = raw.charCodeAt(i);
-  }
-  return array;
-}
-

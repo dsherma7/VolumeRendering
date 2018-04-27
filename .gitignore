@@ -9,3 +9,6 @@ Manual/*.png
 
 # Max OSx Files
 .DS_Store
+
+# Tutorial Videos
+Manual/Tutorial/
