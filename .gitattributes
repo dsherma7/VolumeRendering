@@ -1,3 +1,4 @@
 bonsai.raw.png filter=lfs diff=lfs merge=lfs -text
 foot.raw.png filter=lfs diff=lfs merge=lfs -text
 teapot.raw.png filter=lfs diff=lfs merge=lfs -text
+Manual/VolumeRendering.mp4 filter=lfs diff=lfs merge=lfs -text
